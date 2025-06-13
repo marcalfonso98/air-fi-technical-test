@@ -40,12 +40,15 @@ El backend se encarga de gestionar la API, la base de datos (registro de escaneo
     ```
 3.  **Instala las dependencias de Python:**
     ```bash
+    cd qr_scanner_webapp/
     pip install -r requirements.txt
     ```
 4.  **Aplica las migraciones de la base de datos:**
     ```bash
     python manage.py makemigrations
     python manage.py migrate
+    # en caso que el 'migrate' no funcione o salga error de la tabla users, usar el siguiente comando para generar las tablas:
+    python manage.py migrate --run-syncdb
     ```
 5.  **Crea un superusuario (opcional, para acceder al panel de administración de Django):**
     ```bash
