@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,17 +38,70 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    # Custom apps + Extra
+    'scanner_api',
+    'users',
+    'rest_framework',
+    'corsheaders',
+    'rest_framework_simplejwt'
+    
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    # Each view MUST be authenticated    
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ]
+}
+
+# Set the SimpleJWT
+SIMPLE_JWT = {
+    # Main token
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    
+    # Refresh token
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=3),
+    
+    # Each refresh creates a new refresh token
+    'ROTATE_REFRESH_TOKENS': True,
+    
+    # Set the alghorytm
+    "ALGORITHM": "HS256",
+    
+    # Delete last refresh token
+    'BLACKLIST_AFTER_ROTATION': True,             
+}
+
+# Allow access to the frontend URL
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173'
+]
+
+
+# Email settings
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+# Set the modified backend
+AUTHENTICATED_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+AUTH_USER_MODEL = 'users.User'
 
 ROOT_URLCONF = 'qr_scanner_webapp.urls'
 
