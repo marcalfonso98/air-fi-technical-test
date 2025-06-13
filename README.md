@@ -22,18 +22,18 @@ Para poner en marcha la aplicación, deberás levantar tanto el backend como el 
 El backend se encarga de gestionar la API, la base de datos (registro de escaneos, usuarios) y la lógica de negocio.
 
 **Requisitos previos:**
-* Python 3.8+
+* Python 3.8.10 (se ha ejecutado todo con esta versión, con versiones superiores no puedo asegurar que funcione)
 * pip (gestor de paquetes de Python)
 
 **Pasos para la ejecución:**
 
 1.  **Navega al directorio del backend:**
     ```bash
-    cd backend/qr_scanner_webapp/
+    cd backend/
     ```
 2.  **Crea y activa un entorno virtual (recomendado):**
     ```bash
-    python -m venv venv
+    python3.8 -m venv venv
     source venv/bin/activate # macOS/Linux
     # o
     venv\Scripts\activate # Windows
