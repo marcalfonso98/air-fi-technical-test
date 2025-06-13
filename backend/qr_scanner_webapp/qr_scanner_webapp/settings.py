@@ -68,7 +68,7 @@ REST_FRAMEWORK = {
     ]
 }
 
-# SET THE SimpleJWT
+# Set the SimpleJWT
 SIMPLE_JWT = {
     # Main token
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
@@ -95,6 +95,12 @@ CORS_ALLOWED_ORIGINS = [
 # Email settings
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+# Set the modified backend
+AUTHENTICATED_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+AUTH_USER_MODEL = 'users.User'
 
 ROOT_URLCONF = 'qr_scanner_webapp.urls'
 

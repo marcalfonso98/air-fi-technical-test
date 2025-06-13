@@ -5,13 +5,15 @@ from django.utils import timezone
 
 User = get_user_model()
 
-# Create your models here.
 class ScanLog(models.Model):
+    # Set the DB fields
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='scan_logs')
     qr_content = models.TextField()
-    email = models.EmailField()
+    to_email = models.EmailField()
     timestamp = models.DateTimeField(default=timezone.now)
     
+
+    # Set the output
     def __str__(self):
-        return f"user={self.user.username} | qr_content={self.qr_content} | email={self.email} | timestamp={self.timestamp}"
+        return f"USER: {self.user.email} | qr_content={self.qr_content} | TO={self.to_email} | timestamp={self.timestamp}"
         

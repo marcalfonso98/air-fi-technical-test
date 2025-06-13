@@ -1,7 +1,7 @@
 from django.urls import path, include
-from .views import ScanQR, ScanHistory
+from .views import ScanQRView, ScanHistoryView
 
 urlpatterns = [
-    path('scan/', ScanQR.as_view(), name='scan-qr'),
-    path('scan-history/', ScanHistory.as_view(), name='scan-history'),
+    path('scan/', ScanQRView.as_view(), name='scan-qr'),
+    path('scan-history/', ScanHistoryView.as_view(), name='scan-history'),
 ]

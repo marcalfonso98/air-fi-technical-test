@@ -8,11 +8,10 @@ from .scan_serializer import ScanSerializer
 from .scan_history_serializer import ScanHistorySerializer
 from .models import ScanLog
 
-# Create your views here.
-class ScanQR(APIView):
+class ScanQRView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     
-    def post(self, request, format=None):
+    def post(self, request):
         # Verify the data
         serializer = ScanSerializer(data=request.data)
         
@@ -21,39 +20,37 @@ class ScanQR(APIView):
         
         # Extract the data
         qr_data = serializer.validated_data['qr_content']
-        user_email = serializer.validated_data['user_email']
+        to_email = serializer.validated_data['to_email']
         
         # Get the username of the authenticated user
         user = request.user
         
-        scan_log = ScanLog.objects.create(
+        ScanLog.objects.create(
             user=user,
             qr_content=qr_data,
-            email=user_email
+            to_email=to_email
         )
         
-        mail = send_mail(
-            "Resumen Escaneo QR",
+        # Fake mail using console.EmailBackend
+        send_mail(
+            f"Escáner QR de {user}",
             f'''
-                Hola {user},\n\n
-                Te informamos que has realizado un escáner con éxito y 
-                a continuación tienes la información asociada:\n
-                Contenido del QR: {qr_data}
-                Nombre de usuario: {user}\n
+                Hola,\n
+                Te informamos que alguien ha escaneado un código QR y quiere que lo veas.
+                A continuación puedes ver la información asociada:\n
+                - Contenido del QR: {qr_data}
+                - Nombre de usuario: {user}\n
                 Gracias,
                 Equipo de Escáneres Air-Fi
             ''',
             "noreply_scanner@gmail.com", # From
-            ["malfonso621@gmail.com"], # To
+            [to_email], # To
             fail_silently=False
         )
         
-        print(scan_log)
-
-        
-        return Response({"message": "Escaneo ralizado correctamente!"}, status=status.HTTP_200_OK)
+        return Response({"message": "Escaneo realizado correctamente!"}, status=status.HTTP_200_OK)
     
-class ScanHistory(APIView):
+class ScanHistoryView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     def get(self, request):
         user = request.user
