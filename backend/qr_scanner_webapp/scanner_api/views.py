@@ -16,39 +16,45 @@ class ScanQRView(APIView):
         serializer = ScanSerializer(data=request.data)
         
         # Raise exception in case of error
-        serializer.is_valid(raise_exception=True)        
+        serializer.is_valid(raise_exception=True)   
+        
+        print(f"user is {request.user}")     
         
         # Extract the data
-        qr_data = serializer.validated_data['qr_content']
-        to_email = serializer.validated_data['to_email']
+        if serializer.is_valid():
+            qr_data = serializer.validated_data['qr_content']
+            to_email = serializer.validated_data['to_email']
         
-        # Get the username of the authenticated user
-        user = request.user
-        
-        ScanLog.objects.create(
-            user=user,
-            qr_content=qr_data,
-            to_email=to_email
-        )
+        try:
+            # Get the username of the authenticated user
+            ScanLog.objects.create(
+                user=request.user,
+                qr_content=qr_data,
+                to_email=to_email
+            )
+        except Exception as e:
+            print(f"Error creating ScanLog: {e}")
+            return Response({"message": f"Database error creating scan log: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         # Fake mail using console.EmailBackend
-        send_mail(
-            f"Escáner QR de {user}",
+        # if email_text --> send_email 'OK' otherwise 'KO'
+        email_text = send_mail(
+            f"Escáner QR de {request.user}",
             f'''
                 Hola,\n
                 Te informamos que alguien ha escaneado un código QR y quiere que lo veas.
                 A continuación puedes ver la información asociada:\n
                 - Contenido del QR: {qr_data}
-                - Nombre de usuario: {user}\n
+                - Nombre de usuario: {request.user}\n
                 Gracias,
                 Equipo de Escáneres Air-Fi
             ''',
             "noreply_scanner@gmail.com", # From
-            [to_email], # To
+            [to_email], # To Recipient
             fail_silently=False
         )
         
-        return Response({"message": "Escaneo realizado correctamente!"}, status=status.HTTP_200_OK)
+        return Response({"message": "Código QR enviado correctamente!", "email_sent": True if email_text else False}, status=status.HTTP_200_OK)
     
 class ScanHistoryView(APIView):
     permission_classes = [permissions.IsAuthenticated]

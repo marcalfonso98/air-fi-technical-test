@@ -25,7 +25,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         user = authenticate(request=self.context.get('request'), username=email, password=password)
         
         if not user:
-            raise serializers.ValidationError("No existe el usuario '{user}' en la base de datos.", code='invalid_credentials')
+            raise serializers.ValidationError(f"No existe ningún usuario con las credenciales indicadas.", code='invalid_credentials')
 
         if not user.is_active:
             raise serializers.ValidationError(f"La cuenta de {user} está inactiva", code='inactive_account')
