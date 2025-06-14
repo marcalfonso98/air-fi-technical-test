@@ -1,10 +1,9 @@
-# backend/qr_scanner_webapp/users/models.py
-
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone 
 
 class CustomUserManager(BaseUserManager):
+    # Normal user creation (when register new account)
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError('El campo de email debe ser establecido')
@@ -14,23 +13,26 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+    # Superuser creation -> needed to access Django Admin
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
 
         if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True.')
+            raise ValueError('El usuario no tiene permiso de is_staff')
         if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser=True.')
+            raise ValueError('El usuario no tiene el permiso de is_superuser')
         
         return self.create_user(email, password, **extra_fields)
 
+# Default user creation
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, null=False, blank=False)
     
     username = models.CharField(max_length=150, null=True, blank=False) 
 
+    # New users -> NOT staff
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
@@ -44,14 +46,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         'auth.Group',
         related_name='users_customuser_set', 
         blank=True,
-        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
         verbose_name='groups',
     )
     user_permissions = models.ManyToManyField(
         'auth.Permission',
         related_name='users_customuser_permissions',
         blank=True,
-        help_text='Specific permissions for this user.',
         verbose_name='user permissions',
     )
 

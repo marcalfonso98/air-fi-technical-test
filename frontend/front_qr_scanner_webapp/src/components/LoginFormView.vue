@@ -1,6 +1,6 @@
 <template>
   <h1 class="title">Lector de códigos QR</h1>
-  <div class="login-container">
+  <div class="simple-container">
     <h2>Iniciar Sesión</h2>
     <form @submit.prevent="loginUser">
       <div class="form-group">
@@ -11,7 +11,7 @@
         <label for="password">Contraseña:</label>
         <input type="password" id="password" v-model="password" required>
       </div>
-      <button class="login-button" type="submit">Acceder</button>
+      <button class="simple-button" type="submit">Acceder</button>
     </form>
     <p class="register-text" @click="registerUser">Nuevo usuario? Registrarse</p>
 
@@ -66,28 +66,9 @@ methods: {
 
 <style scoped>
 
-:global(h2) {
-  color: white;
-}
-.login-container {
+
+.simple-container {
   width: 400px;
-  margin: 50px auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.login-container h2 {
-  margin-bottom: 30px;
-  font-size: 30px;
-  font-weight: bold;
-  text-align: center;
-}
-
-.login-container label {
-  text-align: center;
-  color: white;
 }
 
 .title {
@@ -106,25 +87,6 @@ methods: {
   transform: scale(1.1);
 }
 
-.login-button {
-  margin-top: 30px;
-}
-
-.login-button:hover {
-  background-color: rgba(2, 82, 129, 0.692);
-  transform:scale(1.05)
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
 input[type="email"],
 input[type="password"] {
   width: 100%;
@@ -134,14 +96,4 @@ input[type="password"] {
   box-sizing: border-box;
 }
 
-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-}
 </style>

@@ -12,7 +12,7 @@ import qrCodeImg from '../assets/airfi-qr-code.png';
     </div>
     <img v-bind:src="qrCodeImg" width="300px" />
 
-    <button class="login-button" @click="goToLogin">
+    <button class="simple-button" @click="goToLogin">
         Iniciar Sesión
     </button>
 
@@ -34,23 +34,10 @@ export default {
 </script>
 
 <style scoped>
-.login-container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
 
-.login-button {
-    max-width: 40%;
-    margin: 50px;
-}
-
-.login-button:hover {
-    background-color: rgba(2, 82, 129, 0.692);
-    transform: scale(1.05)
+/* Set the max width */
+.simple-button {
+    max-width: 50%;
 }
 
 .title {
@@ -69,14 +56,4 @@ export default {
     font-size: 13px;
 }
 
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-}
 </style>

@@ -212,17 +212,9 @@ async function sendQrData() {
 </script>
 
 <style scoped>
-:global(body) {
-  background-color: black;
-}
-
-label {
-  color: white;
-}
 
 .send-button:hover {
   transform: scale(1.05);
-
 }
 
 .error-message {
@@ -258,15 +250,6 @@ label {
   padding: 10px;
   background-color: #f0f8ff;
   border-radius: 8px;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
 }
 
 input[type="text"],

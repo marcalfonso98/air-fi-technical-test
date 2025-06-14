@@ -5,7 +5,6 @@ from .models import User
 
 
 # Set the Users table to save the new registered users
-
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
     list_display = ('username', 'email', 'is_active', 'is_staff', 'is_superuser')
